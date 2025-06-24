@@ -296,8 +296,11 @@
     "parallelSearch": "Parallel Search",
     "parallelSearchTip": "Parallel search helps speed up the data collection process, but too high a rate may trigger the model's request per minute limit.",
     "searchResults": "Search Results",
-    "searchResultsTip": "The maximum number of web searches. Some search engines do not support this parameter.",
-    "searchApiKeyPlaceholder": "Please enter your Api Key",
+    "searchResultsTip": "The maximum number of web searches. Some search engines do not support this setting.",
+    "searchApiKeyPlaceholder": "Please enter your API key",
+    "allowedSites": "Allowed Sites",
+    "allowedSitesTip": "Filter search results to include only selected sites. Leave empty to search all sites.",
+    "allowedSitesPlaceholder": "Select news sites...",
     "searchScope": "Search Scope",
     "scopeValue": {
       "all": "All",

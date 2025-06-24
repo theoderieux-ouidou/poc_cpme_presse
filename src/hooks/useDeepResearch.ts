@@ -29,7 +29,11 @@ import { isNetworkingModel } from "@/utils/model";
 import { ThinkTagStreamProcessor, removeJsonMarkdown } from "@/utils/text";
 import { parseError } from "@/utils/error";
 import { pick, flat, unique } from "radash";
-import { sendEmailWithResend, formatEmailBody, formatEmailSubject } from "@/utils/email";
+import {
+  sendEmailWithResend,
+  formatEmailBody,
+  formatEmailSubject,
+} from "@/utils/email";
 
 type ProviderOptions = Record<string, Record<string, JSONValue>>;
 type Tools = Record<string, Tool>;
@@ -77,7 +81,7 @@ function useDeepResearch() {
           },
           (data) => {
             reasoning += data;
-          }
+          },
         );
       } else if (part.type === "reasoning") {
         reasoning += part.textDelta;
@@ -95,7 +99,7 @@ function useDeepResearch() {
       model: await createModelProvider(thinkingModel),
       system: getSystemPrompt(),
       prompt: [writeReportPlanPrompt(query), getResponseLanguagePrompt()].join(
-        "\n\n"
+        "\n\n",
       ),
       onError: handleError,
     });
@@ -111,7 +115,7 @@ function useDeepResearch() {
           },
           (data) => {
             reasoning += data;
-          }
+          },
         );
       } else if (part.type === "reasoning") {
         reasoning += part.textDelta;
@@ -158,7 +162,7 @@ function useDeepResearch() {
           },
           (data) => {
             reasoning += data;
-          }
+          },
         );
       } else if (part.type === "reasoning") {
         reasoning += part.textDelta;
@@ -177,7 +181,7 @@ function useDeepResearch() {
       searchMaxResult,
       references,
     } = useSettingStore.getState();
-    const { resources } = useTaskStore.getState();
+    const { resources, allowedSites } = useTaskStore.getState();
     const { networkingModel } = getModel();
     setStatus(t("research.common.research"));
     const plimit = Plimit(parallelSearch);
@@ -255,7 +259,7 @@ function useDeepResearch() {
           if (resources.length > 0) {
             const knowledges = await searchLocalKnowledges(
               item.query,
-              item.researchGoal
+              item.researchGoal,
             );
             content += [
               knowledges,
@@ -268,7 +272,9 @@ function useDeepResearch() {
           if (enableSearch) {
             if (searchProvider !== "model") {
               try {
-                const results = await search(item.query);
+                const filters =
+                  allowedSites.length > 0 ? { allowedSites } : undefined;
+                const results = await search(item.query, filters);
                 sources = results.sources;
                 images = results.images;
 
@@ -280,7 +286,7 @@ function useDeepResearch() {
                 handleError(
                   `[${searchProvider}]: ${
                     err instanceof Error ? err.message : "Search Failed"
-                  }`
+                  }`,
                 );
                 return plimit.clearQueue();
               }
@@ -294,7 +300,7 @@ function useDeepResearch() {
                     item.query,
                     item.researchGoal,
                     sources,
-                    enableReferences
+                    enableReferences,
                   ),
                   getResponseLanguagePrompt(),
                 ].join("\n\n"),
@@ -337,7 +343,7 @@ function useDeepResearch() {
                 },
                 (data) => {
                   reasoning += data;
-                }
+                },
               );
             } else if (part.type === "reasoning") {
               reasoning += part.textDelta;
@@ -353,14 +359,14 @@ function useDeepResearch() {
                     ({ segment, groundingChunkIndices }) => {
                       if (segment.text && groundingChunkIndices) {
                         const index = groundingChunkIndices.map(
-                          (idx: number) => `[${idx + 1}]`
+                          (idx: number) => `[${idx + 1}]`,
                         );
                         content = content.replaceAll(
                           segment.text,
-                          `${segment.text}${index.join("")}`
+                          `${segment.text}${index.join("")}`,
                         );
                       }
-                    }
+                    },
                   );
                 }
               } else if (part.providerMetadata?.openai) {
@@ -379,7 +385,7 @@ function useDeepResearch() {
                   (item, idx) =>
                     `[${idx + 1}]: ${item.url}${
                       item.title ? ` "${item.title.replaceAll('"', " ")}"` : ""
-                    }`
+                    }`,
                 )
                 .join("\n");
           }
@@ -391,7 +397,7 @@ function useDeepResearch() {
           });
           return content;
         });
-      })
+      }),
     );
   }
 
@@ -421,7 +427,7 @@ function useDeepResearch() {
         (text) => {
           content += text;
           const data: PartialJson = parsePartialJson(
-            removeJsonMarkdown(content)
+            removeJsonMarkdown(content),
           );
           if (
             querySchema.safeParse(data.value) &&
@@ -433,14 +439,14 @@ function useDeepResearch() {
                   state: "unprocessed",
                   learning: "",
                   ...pick(item, ["query", "researchGoal"]),
-                })
+                }),
               );
             }
           }
         },
         (text) => {
           reasoning += text;
-        }
+        },
       );
     }
     if (reasoning) console.log(reasoning);
@@ -470,11 +476,11 @@ function useDeepResearch() {
     const learnings = tasks.map((item) => item.learning);
     const sources: Source[] = unique(
       flat(tasks.map((item) => item.sources || [])),
-      (item) => item.url
+      (item) => item.url,
     );
     const images: ImageSource[] = unique(
       flat(tasks.map((item) => item.images || [])),
-      (item) => item.url
+      (item) => item.url,
     );
     const enableCitationImage = images.length > 0 && citationImage === "enable";
     const enableReferences = sources.length > 0 && references === "enable";
@@ -490,7 +496,7 @@ function useDeepResearch() {
           images,
           requirement,
           enableCitationImage,
-          enableReferences
+          enableReferences,
         ),
         getResponseLanguagePrompt(),
       ].join("\n\n"),
@@ -508,7 +514,7 @@ function useDeepResearch() {
           },
           (data) => {
             reasoning += data;
-          }
+          },
         );
       } else if (part.type === "reasoning") {
         reasoning += part.textDelta;
@@ -523,7 +529,7 @@ function useDeepResearch() {
             (item, idx) =>
               `[${idx + 1}]: ${item.url}${
                 item.title ? ` "${item.title.replaceAll('"', " ")}"` : ""
-              }`
+              }`,
           )
           .join("\n");
       updateFinalReport(content);
@@ -537,23 +543,24 @@ function useDeepResearch() {
     setSources(sources);
     const id = save(taskStore.backup());
     setId(id);
-    
-    const { emailEnabled, emailAddress, emailSubject, emailBody } = useSettingStore.getState();
+
+    const { emailEnabled, emailAddress, emailSubject, emailBody } =
+      useSettingStore.getState();
     if (emailEnabled === "enable" && emailAddress && content) {
       try {
         const subject = emailSubject || formatEmailSubject(title);
         const body = emailBody || formatEmailBody(title);
-        
+
         const success = await sendEmailWithResend({
           to: emailAddress,
           subject,
           body,
           reportContent: content,
-          reportTitle: title
+          reportTitle: title,
         });
-        
+
         if (success) {
-          toast.success(t("research.finalReport.emailAutoSent")); 
+          toast.success(t("research.finalReport.emailAutoSent"));
         } else {
           toast.error(t("research.finalReport.emailAutoError"));
         }
@@ -561,7 +568,7 @@ function useDeepResearch() {
         toast.error(t("research.finalReport.emailAutoError"));
       }
     }
-    
+
     return content;
   }
 
@@ -591,7 +598,7 @@ function useDeepResearch() {
           (text) => {
             content += text;
             const data: PartialJson = parsePartialJson(
-              removeJsonMarkdown(content)
+              removeJsonMarkdown(content),
             );
             if (querySchema.safeParse(data.value)) {
               if (
@@ -604,7 +611,7 @@ function useDeepResearch() {
                       state: "unprocessed",
                       learning: "",
                       ...pick(item, ["query", "researchGoal"]),
-                    })
+                    }),
                   );
                   taskStore.update(queries);
                 }
@@ -613,7 +620,7 @@ function useDeepResearch() {
           },
           (text) => {
             reasoning += text;
-          }
+          },
         );
       }
       if (reasoning) console.log(reasoning);

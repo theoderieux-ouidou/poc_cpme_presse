@@ -75,6 +75,8 @@ export interface SettingStore {
   emailAddress: string;
   emailSubject: string;
   emailBody: string;
+  // Site filtering
+  allowedSites: string[];
 }
 
 interface SettingFunction {
@@ -156,6 +158,7 @@ export const defaultValues: SettingStore = {
   emailAddress: "",
   emailSubject: "",
   emailBody: "",
+  //
 };
 
 export const useSettingStore = create(
@@ -165,6 +168,6 @@ export const useSettingStore = create(
       update: (values) => set(values),
       reset: () => set(defaultValues),
     }),
-    { name: "setting" }
-  )
+    { name: "setting" },
+  ),
 );

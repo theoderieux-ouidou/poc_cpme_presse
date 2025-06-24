@@ -131,7 +131,7 @@ export async function createSearchProvider({
   apiKey = "",
   query,
   maxResult = 5,
-  scope = "news",
+  scope = "all",
 }: SearchProviderOptions) {
   const headers: HeadersInit = {
     "Content-Type": "application/json",
@@ -153,10 +153,10 @@ export async function createSearchProvider({
           include_images: true,
           include_image_descriptions: true,
           include_answer: false,
-          include_raw_content: true,
-          include_domains: ["lemonde.fr", "leparisien.fr", "liberation.fr", "humanite.fr", "lopinion.fr", "la-croix.com", "latribune.fr", "letemps.ch", "lesechos.fr", "lefigaro.fr", "lequipe.fr", "ouest-france.fr", "leparisien.fr", "alternatives-economiques.fr", "diplomatie.gouv.fr", "lalettre.fr", "bulletinquotidien.fr"],
+          include_raw_content: false,
+          //include_domains: ["lemonde.fr", "leparisien.fr", "liberation.fr", "humanite.fr", "lopinion.fr", "la-croix.com", "latribune.fr", "letemps.ch", "lesechos.fr", "lefigaro.fr", "lequipe.fr", "ouest-france.fr", "leparisien.fr", "alternatives-economiques.fr", "diplomatie.gouv.fr", "lalettre.fr", "bulletinquotidien.fr"],
         }),
-      }
+      },
     );
     const { results = [], images = [] } = await response.json();
     return {
@@ -188,7 +188,7 @@ export async function createSearchProvider({
           },
           timeout: 60000,
         }),
-      }
+      },
     );
     const { data = [] } = await response.json();
     return {
@@ -223,7 +223,7 @@ export async function createSearchProvider({
             },
           },
         }),
-      }
+      },
     );
     const { results = [] } = await response.json();
     const images: ImageSource[] = [];
@@ -260,7 +260,7 @@ export async function createSearchProvider({
           summary: true,
           count: maxResult,
         }),
-      }
+      },
     );
     const { data = {} } = await response.json();
     const results = data.webPages?.value || [];
@@ -275,7 +275,7 @@ export async function createSearchProvider({
         })) as Source[],
       images: (imageResults as BochaImage[]).map((item) => {
         const matchingResult = (results as BochaSearchResult[]).find(
-          (result) => result.url === item.hostPageUrl
+          (result) => result.url === item.hostPageUrl,
         );
         return {
           url: item.contentUrl,
@@ -291,21 +291,21 @@ export async function createSearchProvider({
       engines:
         scope === "academic"
           ? [
-            "arxiv",
-            "google scholar",
-            "pubmed",
-            "wikispecies",
-            "google_images",
-          ]
+              "arxiv",
+              "google scholar",
+              "pubmed",
+              "wikispecies",
+              "google_images",
+            ]
           : [
-            "google",
-            "bing",
-            "duckduckgo",
-            "brave",
-            "wikipedia",
-            "bing_images",
-            "google_images",
-          ],
+              "google",
+              "bing",
+              "duckduckgo",
+              "brave",
+              "wikipedia",
+              "bing_images",
+              "google_images",
+            ],
       lang: "auto",
       format: "json",
       autocomplete: "google",
@@ -317,17 +317,17 @@ export async function createSearchProvider({
 
     const response = await fetch(
       `${completePath(
-        baseURL || SEARXNG_BASE_URL
+        baseURL || SEARXNG_BASE_URL,
       )}/search?${searchQuery.toString()}`,
       baseURL?.startsWith(location.origin)
         ? { method: "POST", credentials: "omit", headers }
-        : { method: "GET", credentials: "omit" }
+        : { method: "GET", credentials: "omit" },
     );
     const { results = [] } = await response.json();
     const rearrangedResults = sort(
       results as SearxngSearchResult[],
       (item) => item.score,
-      true
+      true,
     );
     return {
       sources: rearrangedResults

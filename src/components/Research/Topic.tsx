@@ -8,6 +8,7 @@ import {
   BookText,
   Paperclip,
   Link,
+  X,
 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -29,6 +30,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
 import useDeepResearch from "@/hooks/useDeepResearch";
 import useAiProvider from "@/hooks/useAiProvider";
 import useKnowledge from "@/hooks/useKnowledge";
@@ -40,6 +49,7 @@ import { useHistoryStore } from "@/store/history";
 
 const formSchema = z.object({
   topic: z.string().min(2),
+  selectedSites: z.array(z.string()).default([]),
 });
 
 function Topic() {
@@ -56,11 +66,33 @@ function Topic() {
   } = useAccurateTimer();
   const [isThinking, setIsThinking] = useState<boolean>(false);
   const [openCrawler, setOpenCrawler] = useState<boolean>(false);
+  const [selectedSite, setSelectedSite] = useState<string>("");
+
+  // Liste des sites disponibles pour le filtrage
+  const availableSites = [
+    "lemonde.fr",
+    "leparisien.fr",
+    "liberation.fr",
+    "humanite.fr",
+    "lopinion.fr",
+    "la-croix.com",
+    "latribune.fr",
+    "letemps.ch",
+    "lesechos.fr",
+    "lefigaro.fr",
+    "lequipe.fr",
+    "ouest-france.fr",
+    "alternatives-economiques.fr",
+    "diplomatie.gouv.fr",
+    "lalettre.fr",
+    "bulletinquotidien.fr",
+  ];
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       topic: taskStore.question,
+      selectedSites: [],
     },
   });
 
@@ -77,7 +109,7 @@ function Topic() {
 
   async function handleSubmit(values: z.infer<typeof formSchema>) {
     if (handleCheck()) {
-      const { id, setQuestion } = useTaskStore.getState();
+      const { id, setQuestion, setAllowedSites } = useTaskStore.getState();
       try {
         setIsThinking(true);
         accurateTimerStart();
@@ -86,6 +118,7 @@ function Topic() {
           form.setValue("topic", values.topic);
         }
         setQuestion(values.topic);
+        setAllowedSites(values.selectedSites);
         await askQuestions();
       } finally {
         setIsThinking(false);
@@ -100,6 +133,26 @@ function Topic() {
     if (id) update(id, backup());
     reset();
     form.reset();
+    form.setValue("selectedSites", []);
+  }
+
+  function addSelectedSite() {
+    if (
+      selectedSite &&
+      !form.getValues("selectedSites").includes(selectedSite)
+    ) {
+      const currentSites = form.getValues("selectedSites");
+      form.setValue("selectedSites", [...currentSites, selectedSite]);
+      setSelectedSite("");
+    }
+  }
+
+  function removeSite(site: string) {
+    const currentSites = form.getValues("selectedSites");
+    form.setValue(
+      "selectedSites",
+      currentSites.filter((s) => s !== site),
+    );
   }
 
   function openKnowledgeList() {
@@ -157,6 +210,57 @@ function Topic() {
                     {...field}
                   />
                 </FormControl>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="selectedSites"
+            render={({ field }) => (
+              <FormItem className="mt-4">
+                <FormLabel className="mb-2 text-base font-semibold">
+                  Filtrer par sites web
+                </FormLabel>
+                <div className="flex flex-wrap gap-2 mb-2">
+                  {field.value.map((site) => (
+                    <Badge key={site} variant="secondary" className="gap-1">
+                      {site}
+                      <button
+                        type="button"
+                        onClick={() => removeSite(site)}
+                        className="text-muted-foreground hover:text-foreground rounded-full outline-none focus:ring-2"
+                      >
+                        <X className="h-3 w-3" />
+                        <span className="sr-only">Supprimer</span>
+                      </button>
+                    </Badge>
+                  ))}
+                </div>
+                <div className="flex gap-2">
+                  <Select value={selectedSite} onValueChange={setSelectedSite}>
+                    <SelectTrigger className="flex-1">
+                      <SelectValue placeholder="Choisir un site" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {availableSites
+                        .filter((site) => !field.value.includes(site))
+                        .map((site) => (
+                          <SelectItem key={site} value={site}>
+                            {site}
+                          </SelectItem>
+                        ))}
+                    </SelectContent>
+                  </Select>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={addSelectedSite}
+                    disabled={!selectedSite}
+                  >
+                    Ajouter
+                  </Button>
+                </div>
               </FormItem>
             )}
           />

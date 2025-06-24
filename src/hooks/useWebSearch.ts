@@ -6,14 +6,32 @@ import {
 import { multiApiKeyPolling } from "@/utils/model";
 import { generateSignature } from "@/utils/signature";
 
+interface SearchFilters {
+  allowedSites?: string[];
+}
+
 function useWebSearch() {
-  async function search(query: string) {
+  async function search(query: string, filters?: SearchFilters) {
     const { mode, searchProvider, searchMaxResult, accessPassword } =
       useSettingStore.getState();
+
+    // Apply site filtering if specified
+    let constrainedQuery = query;
+    if (filters?.allowedSites && filters.allowedSites.length > 0) {
+      const siteConstraints = filters.allowedSites
+        .map((site) => `site:${site}`)
+        .join(" OR ");
+      constrainedQuery = `${query} (${siteConstraints})`;
+      console.log("[DEBUG][useWebSearch] Query transformed:", {
+        original: query,
+        constrained: constrainedQuery,
+        sites: filters.allowedSites,
+      });
+    }
     const options: SearchProviderOptions = {
       provider: searchProvider,
       maxResult: searchMaxResult,
-      query,
+      query: constrainedQuery,
     };
 
     switch (searchProvider) {

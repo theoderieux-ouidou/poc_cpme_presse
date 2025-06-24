@@ -267,23 +267,23 @@ function Setting({ open, onClose }: SettingProps) {
           : [];
       return disabledAIProviders.includes(provider);
     },
-    [mode]
+    [mode],
   );
 
   const isDisabledAIModel = useCallback(
     (model: string) => {
       if (mode === "local") return false;
       const { availableModelList, disabledModelList } = getCustomModelList(
-        MODEL_LIST.length > 0 ? MODEL_LIST.split(",") : []
+        MODEL_LIST.length > 0 ? MODEL_LIST.split(",") : [],
       );
       const isAvailableModel = availableModelList.some(
-        (availableModel) => availableModel === model
+        (availableModel) => availableModel === model,
       );
       if (isAvailableModel) return false;
       if (disabledModelList.includes("all")) return true;
       return disabledModelList.some((disabledModel) => disabledModel === model);
     },
-    [mode]
+    [mode],
   );
 
   const isDisabledSearchProvider = useCallback(
@@ -294,7 +294,7 @@ function Setting({ open, onClose }: SettingProps) {
           : [];
       return disabledSearchProviders.includes(provider);
     },
-    [mode]
+    [mode],
   );
 
   const installPWA = async () => {
@@ -492,7 +492,7 @@ function Setting({ open, onClose }: SettingProps) {
                               onBlur={() =>
                                 updateSetting(
                                   "apiKey",
-                                  form.getValues("apiKey")
+                                  form.getValues("apiKey"),
                                 )
                               }
                             />
@@ -515,7 +515,7 @@ function Setting({ open, onClose }: SettingProps) {
                               onBlur={() =>
                                 updateSetting(
                                   "apiProxy",
-                                  form.getValues("apiProxy")
+                                  form.getValues("apiProxy"),
                                 )
                               }
                             />
@@ -548,7 +548,7 @@ function Setting({ open, onClose }: SettingProps) {
                               onBlur={() =>
                                 updateSetting(
                                   "openRouterApiKey",
-                                  form.getValues("openRouterApiKey")
+                                  form.getValues("openRouterApiKey"),
                                 )
                               }
                             />
@@ -571,7 +571,7 @@ function Setting({ open, onClose }: SettingProps) {
                               onBlur={() =>
                                 updateSetting(
                                   "openRouterApiProxy",
-                                  form.getValues("openRouterApiProxy")
+                                  form.getValues("openRouterApiProxy"),
                                 )
                               }
                             />
@@ -604,7 +604,7 @@ function Setting({ open, onClose }: SettingProps) {
                               onBlur={() =>
                                 updateSetting(
                                   "openAIApiKey",
-                                  form.getValues("openAIApiKey")
+                                  form.getValues("openAIApiKey"),
                                 )
                               }
                             />
@@ -627,7 +627,7 @@ function Setting({ open, onClose }: SettingProps) {
                               onBlur={() =>
                                 updateSetting(
                                   "openAIApiProxy",
-                                  form.getValues("openAIApiProxy")
+                                  form.getValues("openAIApiProxy"),
                                 )
                               }
                             />
@@ -660,7 +660,7 @@ function Setting({ open, onClose }: SettingProps) {
                               onBlur={() =>
                                 updateSetting(
                                   "anthropicApiKey",
-                                  form.getValues("anthropicApiKey")
+                                  form.getValues("anthropicApiKey"),
                                 )
                               }
                             />
@@ -683,7 +683,7 @@ function Setting({ open, onClose }: SettingProps) {
                               onBlur={() =>
                                 updateSetting(
                                   "anthropicApiProxy",
-                                  form.getValues("anthropicApiProxy")
+                                  form.getValues("anthropicApiProxy"),
                                 )
                               }
                             />
@@ -716,7 +716,7 @@ function Setting({ open, onClose }: SettingProps) {
                               onBlur={() =>
                                 updateSetting(
                                   "deepseekApiKey",
-                                  form.getValues("deepseekApiKey")
+                                  form.getValues("deepseekApiKey"),
                                 )
                               }
                             />
@@ -739,7 +739,7 @@ function Setting({ open, onClose }: SettingProps) {
                               onBlur={() =>
                                 updateSetting(
                                   "deepseekApiProxy",
-                                  form.getValues("deepseekApiProxy")
+                                  form.getValues("deepseekApiProxy"),
                                 )
                               }
                             />
@@ -772,7 +772,7 @@ function Setting({ open, onClose }: SettingProps) {
                               onBlur={() =>
                                 updateSetting(
                                   "xAIApiKey",
-                                  form.getValues("xAIApiKey")
+                                  form.getValues("xAIApiKey"),
                                 )
                               }
                             />
@@ -795,7 +795,7 @@ function Setting({ open, onClose }: SettingProps) {
                               onBlur={() =>
                                 updateSetting(
                                   "xAIApiProxy",
-                                  form.getValues("xAIApiProxy")
+                                  form.getValues("xAIApiProxy"),
                                 )
                               }
                             />
@@ -828,7 +828,7 @@ function Setting({ open, onClose }: SettingProps) {
                               onBlur={() =>
                                 updateSetting(
                                   "mistralApiKey",
-                                  form.getValues("mistralApiKey")
+                                  form.getValues("mistralApiKey"),
                                 )
                               }
                             />
@@ -851,7 +851,7 @@ function Setting({ open, onClose }: SettingProps) {
                               onBlur={() =>
                                 updateSetting(
                                   "mistralApiProxy",
-                                  form.getValues("mistralApiProxy")
+                                  form.getValues("mistralApiProxy"),
                                 )
                               }
                             />
@@ -884,7 +884,7 @@ function Setting({ open, onClose }: SettingProps) {
                               onBlur={() =>
                                 updateSetting(
                                   "azureApiKey",
-                                  form.getValues("azureApiKey")
+                                  form.getValues("azureApiKey"),
                                 )
                               }
                             />
@@ -910,7 +910,7 @@ function Setting({ open, onClose }: SettingProps) {
                               onBlur={() =>
                                 updateSetting(
                                   "azureResourceName",
-                                  form.getValues("azureResourceName")
+                                  form.getValues("azureResourceName"),
                                 )
                               }
                             />
@@ -933,7 +933,7 @@ function Setting({ open, onClose }: SettingProps) {
                               onBlur={() =>
                                 updateSetting(
                                   "azureApiVersion",
-                                  form.getValues("azureApiVersion")
+                                  form.getValues("azureApiVersion"),
                                 )
                               }
                             />
@@ -966,7 +966,7 @@ function Setting({ open, onClose }: SettingProps) {
                               onBlur={() =>
                                 updateSetting(
                                   "openAICompatibleApiKey",
-                                  form.getValues("openAICompatibleApiKey")
+                                  form.getValues("openAICompatibleApiKey"),
                                 )
                               }
                             />
@@ -989,7 +989,7 @@ function Setting({ open, onClose }: SettingProps) {
                               onBlur={() =>
                                 updateSetting(
                                   "openAICompatibleApiProxy",
-                                  form.getValues("openAICompatibleApiProxy")
+                                  form.getValues("openAICompatibleApiProxy"),
                                 )
                               }
                             />
@@ -1018,7 +1018,7 @@ function Setting({ open, onClose }: SettingProps) {
                               onBlur={() =>
                                 updateSetting(
                                   "pollinationsApiProxy",
-                                  form.getValues("pollinationsApiProxy")
+                                  form.getValues("pollinationsApiProxy"),
                                 )
                               }
                             />
@@ -1047,7 +1047,7 @@ function Setting({ open, onClose }: SettingProps) {
                               onBlur={() =>
                                 updateSetting(
                                   "ollamaApiProxy",
-                                  form.getValues("ollamaApiProxy")
+                                  form.getValues("ollamaApiProxy"),
                                 )
                               }
                             />
@@ -1083,7 +1083,7 @@ function Setting({ open, onClose }: SettingProps) {
                             onBlur={() =>
                               updateSetting(
                                 "accessPassword",
-                                form.getValues("accessPassword")
+                                form.getValues("accessPassword"),
                               )
                             }
                           />
@@ -1123,7 +1123,7 @@ function Setting({ open, onClose }: SettingProps) {
                               >
                                 <SelectValue
                                   placeholder={t(
-                                    "setting.modelListLoadingPlaceholder"
+                                    "setting.modelListLoadingPlaceholder",
                                   )}
                                 />
                               </SelectTrigger>
@@ -1207,7 +1207,7 @@ function Setting({ open, onClose }: SettingProps) {
                               >
                                 <SelectValue
                                   placeholder={t(
-                                    "setting.modelListLoadingPlaceholder"
+                                    "setting.modelListLoadingPlaceholder",
                                   )}
                                 />
                               </SelectTrigger>
@@ -1297,7 +1297,7 @@ function Setting({ open, onClose }: SettingProps) {
                               >
                                 <SelectValue
                                   placeholder={t(
-                                    "setting.modelListLoadingPlaceholder"
+                                    "setting.modelListLoadingPlaceholder",
                                   )}
                                 />
                               </SelectTrigger>
@@ -1381,7 +1381,7 @@ function Setting({ open, onClose }: SettingProps) {
                               >
                                 <SelectValue
                                   placeholder={t(
-                                    "setting.modelListLoadingPlaceholder"
+                                    "setting.modelListLoadingPlaceholder",
                                   )}
                                 />
                               </SelectTrigger>
@@ -1471,7 +1471,7 @@ function Setting({ open, onClose }: SettingProps) {
                               >
                                 <SelectValue
                                   placeholder={t(
-                                    "setting.modelListLoadingPlaceholder"
+                                    "setting.modelListLoadingPlaceholder",
                                   )}
                                 />
                               </SelectTrigger>
@@ -1555,7 +1555,7 @@ function Setting({ open, onClose }: SettingProps) {
                               >
                                 <SelectValue
                                   placeholder={t(
-                                    "setting.modelListLoadingPlaceholder"
+                                    "setting.modelListLoadingPlaceholder",
                                   )}
                                 />
                               </SelectTrigger>
@@ -1645,7 +1645,7 @@ function Setting({ open, onClose }: SettingProps) {
                               >
                                 <SelectValue
                                   placeholder={t(
-                                    "setting.modelListLoadingPlaceholder"
+                                    "setting.modelListLoadingPlaceholder",
                                   )}
                                 />
                               </SelectTrigger>
@@ -1710,7 +1710,7 @@ function Setting({ open, onClose }: SettingProps) {
                               >
                                 <SelectValue
                                   placeholder={t(
-                                    "setting.modelListLoadingPlaceholder"
+                                    "setting.modelListLoadingPlaceholder",
                                   )}
                                 />
                               </SelectTrigger>
@@ -1781,7 +1781,7 @@ function Setting({ open, onClose }: SettingProps) {
                               >
                                 <SelectValue
                                   placeholder={t(
-                                    "setting.modelListLoadingPlaceholder"
+                                    "setting.modelListLoadingPlaceholder",
                                   )}
                                 />
                               </SelectTrigger>
@@ -1865,7 +1865,7 @@ function Setting({ open, onClose }: SettingProps) {
                               >
                                 <SelectValue
                                   placeholder={t(
-                                    "setting.modelListLoadingPlaceholder"
+                                    "setting.modelListLoadingPlaceholder",
                                   )}
                                 />
                               </SelectTrigger>
@@ -1955,7 +1955,7 @@ function Setting({ open, onClose }: SettingProps) {
                               >
                                 <SelectValue
                                   placeholder={t(
-                                    "setting.modelListLoadingPlaceholder"
+                                    "setting.modelListLoadingPlaceholder",
                                   )}
                                 />
                               </SelectTrigger>
@@ -2020,7 +2020,7 @@ function Setting({ open, onClose }: SettingProps) {
                               >
                                 <SelectValue
                                   placeholder={t(
-                                    "setting.modelListLoadingPlaceholder"
+                                    "setting.modelListLoadingPlaceholder",
                                   )}
                                 />
                               </SelectTrigger>
@@ -2091,7 +2091,7 @@ function Setting({ open, onClose }: SettingProps) {
                               >
                                 <SelectValue
                                   placeholder={t(
-                                    "setting.modelListLoadingPlaceholder"
+                                    "setting.modelListLoadingPlaceholder",
                                   )}
                                 />
                               </SelectTrigger>
@@ -2175,7 +2175,7 @@ function Setting({ open, onClose }: SettingProps) {
                               >
                                 <SelectValue
                                   placeholder={t(
-                                    "setting.modelListLoadingPlaceholder"
+                                    "setting.modelListLoadingPlaceholder",
                                   )}
                                 />
                               </SelectTrigger>
@@ -2327,7 +2327,7 @@ function Setting({ open, onClose }: SettingProps) {
                                 <SelectTrigger>
                                   <SelectValue
                                     placeholder={t(
-                                      "setting.modelListLoadingPlaceholder"
+                                      "setting.modelListLoadingPlaceholder",
                                     )}
                                   />
                                 </SelectTrigger>
@@ -2392,7 +2392,7 @@ function Setting({ open, onClose }: SettingProps) {
                                 <SelectTrigger>
                                   <SelectValue
                                     placeholder={t(
-                                      "setting.modelListLoadingPlaceholder"
+                                      "setting.modelListLoadingPlaceholder",
                                     )}
                                   />
                                 </SelectTrigger>
@@ -2455,7 +2455,7 @@ function Setting({ open, onClose }: SettingProps) {
                               >
                                 <SelectValue
                                   placeholder={t(
-                                    "setting.modelListLoadingPlaceholder"
+                                    "setting.modelListLoadingPlaceholder",
                                   )}
                                 />
                               </SelectTrigger>
@@ -2539,7 +2539,7 @@ function Setting({ open, onClose }: SettingProps) {
                               >
                                 <SelectValue
                                   placeholder={t(
-                                    "setting.modelListLoadingPlaceholder"
+                                    "setting.modelListLoadingPlaceholder",
                                   )}
                                 />
                               </SelectTrigger>
@@ -2637,7 +2637,7 @@ function Setting({ open, onClose }: SettingProps) {
                                 <SelectTrigger>
                                   <SelectValue
                                     placeholder={t(
-                                      "setting.modelListLoadingPlaceholder"
+                                      "setting.modelListLoadingPlaceholder",
                                     )}
                                   />
                                 </SelectTrigger>
@@ -2702,7 +2702,7 @@ function Setting({ open, onClose }: SettingProps) {
                                 <SelectTrigger>
                                   <SelectValue
                                     placeholder={t(
-                                      "setting.modelListLoadingPlaceholder"
+                                      "setting.modelListLoadingPlaceholder",
                                     )}
                                   />
                                 </SelectTrigger>
@@ -3275,7 +3275,7 @@ function Setting({ open, onClose }: SettingProps) {
                   </div>
                 ) : null}
                 <div className="from-item">
-                 {/* <Label className="from-label">{t("setting.version")}</Label>*/}
+                  {/* <Label className="from-label">{t("setting.version")}</Label>*/}
                   {/*<div className="form-field text-center leading-9">
                     {`v${VERSION}`}
                     <small className="ml-1">
@@ -3304,11 +3304,13 @@ function Setting({ open, onClose }: SettingProps) {
                     {t("setting.resetAllSettings")}
                   </Button>
                 </div>
-                
+
                 {/* Email Settings */}
                 <div className="border-t pt-4 mt-4">
-                  <h3 className="text-lg font-semibold mb-4">{t("setting.email.title")}</h3>
-                  
+                  <h3 className="text-lg font-semibold mb-4">
+                    {t("setting.email.title")}
+                  </h3>
+
                   <FormField
                     control={form.control}
                     name="emailEnabled"
@@ -3337,7 +3339,7 @@ function Setting({ open, onClose }: SettingProps) {
                       </FormItem>
                     )}
                   />
-                  
+
                   <FormField
                     control={form.control}
                     name="emailAddress"
@@ -3356,7 +3358,7 @@ function Setting({ open, onClose }: SettingProps) {
                       </FormItem>
                     )}
                   />
-                  
+
                   <FormField
                     control={form.control}
                     name="emailSubject"
@@ -3375,7 +3377,7 @@ function Setting({ open, onClose }: SettingProps) {
                       </FormItem>
                     )}
                   />
-                  
+
                   <FormField
                     control={form.control}
                     name="emailBody"

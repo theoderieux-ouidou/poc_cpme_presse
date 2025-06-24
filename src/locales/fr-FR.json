@@ -298,6 +298,9 @@
     "searchResults": "Résultats de recherche",
     "searchResultsTip": "Le nombre maximum de recherches web. Certains moteurs de recherche ne prennent pas en charge ce paramètre.",
     "searchApiKeyPlaceholder": "Veuillez entrer votre clé API",
+    "allowedSites": "Sites autorisés",
+    "allowedSitesTip": "Filtrer les résultats de recherche pour inclure uniquement les sites sélectionnés. Laissez vide pour rechercher sur tous les sites.",
+    "allowedSitesPlaceholder": "Sélectionner des sites d'actualités...",
     "searchScope": "Portée de la recherche",
     "scopeValue": {
       "all": "Tout",
@@ -347,4 +350,4 @@
     "confirm": "Confirmer",
     "cancel": "Annuler"
   }
-} 
+}
