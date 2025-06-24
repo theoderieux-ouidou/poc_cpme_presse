@@ -139,6 +139,7 @@ export async function createSearchProvider({
   if (apiKey) headers.Authorization = `Bearer ${apiKey}`;
 
   if (provider === "tavily") {
+    console.log("query", query);
     const response = await fetch(
       `${completePath(baseURL || TAVILY_BASE_URL)}/search`,
       {

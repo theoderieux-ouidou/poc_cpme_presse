@@ -158,6 +158,7 @@ export const defaultValues: SettingStore = {
   emailAddress: "",
   emailSubject: "",
   emailBody: "",
+  // Site filtering
   allowedSites: []
 };
 
