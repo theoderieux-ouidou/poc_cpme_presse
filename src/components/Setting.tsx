@@ -585,7 +585,8 @@ function Setting({ open, onClose }: SettingProps) {
                       hidden: provider !== "openai",
                     })}
                   >
-                    <FormField
+                    {/* Champ clé API OpenAI masqué car géré côté serveur */}
+                    {/* <FormField
                       control={form.control}
                       name="openAIApiKey"
                       render={({ field }) => (
@@ -611,7 +612,7 @@ function Setting({ open, onClose }: SettingProps) {
                           </FormControl>
                         </FormItem>
                       )}
-                    />
+                    /> */}
                     <FormField
                       control={form.control}
                       name="openAIApiProxy"
@@ -809,7 +810,8 @@ function Setting({ open, onClose }: SettingProps) {
                       hidden: provider !== "mistral",
                     })}
                   >
-                    <FormField
+                    {/* Champ clé API Mistral masqué car géré côté serveur */}
+                    {/* <FormField
                       control={form.control}
                       name="mistralApiKey"
                       render={({ field }) => (
@@ -835,7 +837,7 @@ function Setting({ open, onClose }: SettingProps) {
                           </FormControl>
                         </FormItem>
                       )}
-                    />
+                    /> */}
                     <FormField
                       control={form.control}
                       name="mistralApiProxy"
@@ -2825,7 +2827,8 @@ function Setting({ open, onClose }: SettingProps) {
                       hidden: searchProvider !== "tavily",
                     })}
                   >
-                    <FormField
+                    {/* Champ clé API Tavily masqué car géré côté serveur */}
+                    {/* <FormField
                       control={form.control}
                       name="tavilyApiKey"
                       render={({ field }) => (
@@ -2846,7 +2849,7 @@ function Setting({ open, onClose }: SettingProps) {
                           </FormControl>
                         </FormItem>
                       )}
-                    />
+                    /> */}
                     <FormField
                       control={form.control}
                       name="tavilyApiProxy"
