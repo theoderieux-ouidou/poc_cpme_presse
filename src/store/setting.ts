@@ -158,7 +158,7 @@ export const defaultValues: SettingStore = {
   emailAddress: "",
   emailSubject: "",
   emailBody: "",
-  //
+  allowedSites: []
 };
 
 export const useSettingStore = create(
