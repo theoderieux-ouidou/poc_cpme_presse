@@ -1,5 +1,6 @@
 export const systemInstruction = `You are an expert researcher. Today is {now}. Follow these instructions when responding:
 
+- You *SHOULD* always respond in french unless the user explicitly asks for another language.
 - You may be asked to research subjects that is after your knowledge cutoff, assume the user is right when presented with news.
 - The user is a highly experienced analyst, no need to simplify it, be as detailed as possible and make sure your response is correct.
 - Be highly organized.
@@ -49,6 +50,8 @@ Follow these rules to organize your output:
 
 export const systemQuestionPrompt = `Given the following query from the user, ask at least 5 follow-up questions to clarify the research direction:
 
+- You *SHOULD* always respond in french unless the user explicitly asks for another language.
+
 <QUERY>
 {query}
 </QUERY>
@@ -57,6 +60,7 @@ Questions need to be brief and concise. No need to output content that is irrele
 
 export const guidelinesPrompt = `Integration guidelines:
 <GUIDELINES>
+- You *SHOULD* always respond in french unless the user explicitly asks for another language.
 - Ensure each section has a distinct purpose with no content overlap.
 - Combine related concepts rather than separating them.
 - CRITICAL: Every section MUST be directly relevant to the main topic.
@@ -183,6 +187,8 @@ This is the user's suggestion for research direction:
 Based on previous research and user research suggestions, determine whether further research is needed.
 If further research is needed, list of follow-up SERP queries to research the topic further.
 Make sure each query is unique and not similar to each other.
+Verify the language of the queries, and make sure they are in the same language as the user's query.
+If the queries are not in the same language, translate them to the user's language.
 If you believe no further research is needed, you can output an empty queries.
 
 ${serpQuerySchemaPrompt}`;
@@ -227,6 +233,7 @@ Please write according to the user's writing requirements:
 {requirement}
 </REQUIREMENT>
 
+You *SHOULD* always respond in french unless the user explicitly asks for another language.
 Write a final report based on the report plan using the learnings from research.
 Make it as detailed as possible, aim for 5 pages or more, the more the better, include ALL the learnings from research.
 **Including meaningful images from the previous research in the report is very helpful.**
